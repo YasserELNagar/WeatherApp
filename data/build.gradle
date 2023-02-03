@@ -24,6 +24,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            buildConfigField "String", "WEATHER_API_KEY", String.valueOf(System.getenv("WEATHER_API_KEY"))
+        }
+        prod {
+            buildConfigField "String", "WEATHER_API_KEY", String.valueOf(System.getenv("WEATHER_API_KEY"))
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,6 +65,8 @@ dependencies {
 
     // Retrofit
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+
 
     //hilt
     implementation "com.google.dagger:hilt-android:2.44.2"
