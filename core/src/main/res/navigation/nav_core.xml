@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_core"
+    app:startDestination="@id/capturePhotoFragment">
+
+    <fragment
+        android:id="@+id/capturePhotoFragment"
+        android:name="com.example.core.capturePhoto.CapturePhotoFragment"
+        android:label="fragment_capture_photo"
+        tools:layout="@layout/fragment_capture_photo">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="www.weatherapp.com/capture-photo" />
+    </fragment>
+</navigation>
