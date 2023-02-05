@@ -13,6 +13,9 @@ android {
 dependencies {
     implementation(project(":data"))
 
+    //google map service
+    implementation "com.google.android.gms:play-services-location:21.0.1"
+
     //hilt
     implementation "com.google.dagger:hilt-android:2.44.2"
     kapt "com.google.dagger:hilt-compiler:2.44.2"

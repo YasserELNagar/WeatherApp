@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">core</string>
     <string name="share_to">Share To</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_open_gps">please open gps</string>
+    <string name="gps_request">Goto Settings Page To Enable GPS</string>
+    <string name="seomthing_went_wrong">SomeThing Went Wrong !!</string>
+    <string name="internet_connection_msg">Internet Connection Issue, Please Check Your Network</string>
 </resources>

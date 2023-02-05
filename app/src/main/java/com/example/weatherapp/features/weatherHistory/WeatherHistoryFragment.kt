@@ -5,18 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.core.capturePhoto.CapturePhotoViewModel
 import com.example.core.resource.Resource
+import com.example.core.util.handleError
 import com.example.core.util.shareImage
 import com.example.core.util.zoom
-import com.example.data.AppException
 import com.example.domain.model.WeatherItem
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentWeatherHistoryBinding
 import com.example.weatherapp.features.weatherHistory.adapter.WeatherHistoryItemsAdapter
 import com.example.weatherapp.features.weatherHistory.adapter.WeatherItemActionType
@@ -38,7 +36,7 @@ class WeatherHistoryFragment : Fragment() {
                     requireActivity().zoom(position,viewModel.weatherItemsPhotos)
                 }
                 WeatherItemActionType.SHARE->{
-                    requireActivity().shareImage(item.photoPath?:"")
+                    requireActivity().shareImage(item?.photoPath?:"")
                 }
             }
         }
@@ -76,24 +74,12 @@ class WeatherHistoryFragment : Fragment() {
                         onWeatherItemsSuccess(state.data)
                     }
                     is Resource.ERROR->{
-                        handleError(state.error)
+                        requireContext().handleError(state.error)
                     }
                     else->{}
                 }
             }
         }
-    }
-
-    private fun handleError(t: Throwable?) {
-        val errorMsg=when(t){
-            AppException.NetworkException->{
-                getString(R.string.internet_connection_msg)
-            }
-            else->{
-                getString(R.string.seomthing_went_wrong)
-            }
-        }
-        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
     }
 
     private fun onWeatherItemsSuccess(items: List<WeatherItem?>?) {

@@ -1,11 +1,16 @@
 package com.example.core.util
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.core.R
+import com.example.data.AppException
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.stfalcon.frescoimageviewer.ImageViewer
 import java.io.File
 
@@ -38,4 +43,21 @@ fun Activity.zoom(position: Int, imageUrls: List<String>) {
         .setBackgroundColorRes(android.R.color.black)
         .show()
 
+}
+
+fun initFresco(application: Application){
+    Fresco.initialize(application)
+}
+
+
+fun Context.handleError(t: Throwable?) {
+    val errorMsg=when(t){
+        AppException.NetworkException->{
+            getString(R.string.internet_connection_msg)
+        }
+        else->{
+            getString(R.string.seomthing_went_wrong)
+        }
+    }
+    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
 }

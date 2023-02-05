@@ -11,7 +11,7 @@ import com.example.domain.model.WeatherItem
 import com.example.weatherapp.R
 
 
-class WeatherHistoryItemsAdapter(private val clickListener:(position:Int,item:WeatherItem,actionType:WeatherItemActionType)->Unit ) :
+class WeatherHistoryItemsAdapter(private val clickListener:(position:Int,item:WeatherItem?,actionType:WeatherItemActionType)->Unit ) :
     ListAdapter<WeatherItem, WeatherHistoryItemsAdapter.WeatherHistoryItemViewHolder>(
         DiffUtilCallback
     ) {
@@ -30,22 +30,29 @@ class WeatherHistoryItemsAdapter(private val clickListener:(position:Int,item:We
     
     class WeatherHistoryItemViewHolder(
         private val binding: ViewWeatherHistoryListItemBinding,
-        private val clickListener: (position:Int,item:WeatherItem,actionType:WeatherItemActionType)-> Unit
+        private val clickListener: (position:Int,item:WeatherItem?,actionType:WeatherItemActionType)-> Unit
 
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: WeatherItem?) {
             val context =binding.tvTemp.context
-            binding.tvTemp.text = context.getString(R.string.heat_degree_format,item?.temp?.toInt().toString())
+            binding.tvTemp.text = context.getString(R.string.heat_degree_format,item?.temp.toString())
             binding.tvCondition.text = item?.description
             binding.tvLocation.text = item?.cityName
             binding.ivImage.loadOfflineImage(item?.photoPath)
+            binding.btnShare.setOnClickListener {
+                clickListener(adapterPosition,item,WeatherItemActionType.SHARE)
+            }
+            binding.root.setOnClickListener {
+                clickListener(adapterPosition,item,WeatherItemActionType.VIEW)
+            }
+
         }
 
         companion object {
             fun from(
                 parent: ViewGroup,
-                clickListener: (position:Int,item:WeatherItem,actionType:WeatherItemActionType)-> Unit
+                clickListener: (position:Int,item:WeatherItem?,actionType:WeatherItemActionType)-> Unit
             ): WeatherHistoryItemViewHolder {
                 return WeatherHistoryItemViewHolder(
                     ViewWeatherHistoryListItemBinding.inflate(

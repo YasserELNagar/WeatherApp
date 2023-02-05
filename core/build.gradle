@@ -16,6 +16,8 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":data"))
+
 
     //fragment-x
     implementation "androidx.fragment:fragment:1.6.0-alpha04"
