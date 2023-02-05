@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav"
     app:startDestination="@id/weatherHistoryFragment">
 
@@ -11,6 +12,18 @@
         <action
             android:id="@+id/action_weatherHistoryFragment_to_nav_core"
             app:destination="@id/nav_core" />
+        <action
+            android:id="@+id/action_weatherHistoryFragment_to_captureWeatherDataFragment"
+            app:destination="@id/captureWeatherDataFragment" />
     </fragment>
     <include app:graph="@navigation/nav_core" />
+    <fragment
+        android:id="@+id/captureWeatherDataFragment"
+        android:name="com.example.weatherapp.features.captureWeather.CaptureWeatherDataFragment"
+        android:label="fragment_capture_weather_data"
+        tools:layout="@layout/fragment_capture_weather_data" >
+        <argument
+            android:name="capturePhotoPath"
+            app:argType="string" />
+    </fragment>
 </navigation>

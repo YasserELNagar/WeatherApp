@@ -2,7 +2,9 @@ package com.example.core.util
 
 import android.app.Activity
 import android.media.ExifInterface
+import android.os.Build
 import android.os.Environment
+import androidx.annotation.RequiresApi
 import com.example.domain.model.WeatherItem
 import java.io.File
 
@@ -17,6 +19,7 @@ fun deleteFile(filePath: String): Boolean {
     return deleted
 }
 
+@RequiresApi(Build.VERSION_CODES.ECLAIR)
 fun saveWeatherDataIntoImageFile(item: WeatherItem){
     item.photoPath?.let {
         val exif = ExifInterface(it)
@@ -29,6 +32,7 @@ fun saveWeatherDataIntoImageFile(item: WeatherItem){
 }
 
 
+@RequiresApi(Build.VERSION_CODES.FROYO)
 fun Activity.getPhotoFile(name: String): File {
     val path = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     val photoName = "Image-$name.jpg"

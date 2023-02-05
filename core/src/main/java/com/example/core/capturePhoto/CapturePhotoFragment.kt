@@ -15,6 +15,8 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.core.capturePhoto.Constns.CAPTURE_PHOTO_PATH
 import com.example.core.capturePhoto.Constns.REQUEST_CAPTURE_PHOTO_CODE
@@ -23,13 +25,16 @@ import com.example.core.util.CAMERA_PERMISSION_REQUEST_CODE
 import com.example.core.util.checkCameraPermission
 import com.example.core.util.getPhotoFile
 import com.google.common.util.concurrent.ListenableFuture
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+@AndroidEntryPoint
 class CapturePhotoFragment : Fragment() {
     private lateinit var binding: FragmentCapturePhotoBinding
     private lateinit var mFutureCameraProvider: ListenableFuture<ProcessCameraProvider>
     private lateinit var mImageCapture: ImageCapture
+    private val capturePhotoViewModel :CapturePhotoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -119,13 +124,8 @@ class CapturePhotoFragment : Fragment() {
     }
 
     private fun sendResultBack(photoPath: String?) {
-        requireActivity()
-            .supportFragmentManager
-            .setFragmentResult(
-                REQUEST_CAPTURE_PHOTO_CODE,
-                bundleOf(CAPTURE_PHOTO_PATH to photoPath)
-            )
-
+        capturePhotoViewModel.setCapturePhoto(photoPath)
+        findNavController().popBackStack()
     }
 
 

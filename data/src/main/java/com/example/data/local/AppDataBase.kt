@@ -6,7 +6,7 @@ import com.example.data.Constns.DB_VERSION
 import com.example.data.local.dao.WeatherDao
 import com.example.data.local.entities.WeatherEntity
 
-@Database(entities = [WeatherEntity::class], version = DB_VERSION)
+@Database(entities = [WeatherEntity::class], version = DB_VERSION, exportSchema = false)
 abstract class AppDataBase :RoomDatabase() {
 
     abstract fun weatherDao():WeatherDao
