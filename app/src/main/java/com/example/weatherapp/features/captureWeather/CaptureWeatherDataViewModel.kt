@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.resource.Resource
 import com.example.domain.model.WeatherItem
-import com.example.domain.usecase.FetchCurrentLocationUseCase
-import com.example.domain.usecase.GetCurrentWeatherDataUseCase
-import com.example.domain.usecase.SaveWeatherItemUseCase
+import com.example.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CaptureWeatherDataViewModel @Inject constructor(
     private val state: SavedStateHandle,
+    private val validateAddingWeatherItemUseCase: ValidateAddingWeatherItemUseCase,
     private val saveWeatherItemUseCase: SaveWeatherItemUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val getCurrentWeatherDataUseCase: GetCurrentWeatherDataUseCase
@@ -62,21 +61,12 @@ class CaptureWeatherDataViewModel @Inject constructor(
     }
 
     fun onSaveClick(degree:String?,city:String?,condition:String?){
-        when{
-            degree.isNullOrEmpty()->{
-                _weatherInputValidations.value=WeatherInputValidations.TEMP_EMPTY
-            }
-            city.isNullOrEmpty()->{
-                _weatherInputValidations.value=WeatherInputValidations.LOCATION_EMPTY
-            }
-            condition.isNullOrEmpty()->{
-                _weatherInputValidations.value=WeatherInputValidations.WEATHER_CONDITION_EMPTY
-            }
-            else->{
-                saveWeatherData(degree.toDouble(),city,condition)
-            }
+        val validationError=validateAddingWeatherItemUseCase(degree,city, condition)
+        validationError?.let {
+            saveWeatherData(degree!!.toDouble(),city!!,condition!!)
+        }?: run {
+            _weatherInputValidations.value
         }
-
     }
 
     private fun saveWeatherData(degree:Double,city:String,condition:String){
